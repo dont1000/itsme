@@ -3,30 +3,25 @@ export default defineEventHandler(async (event) => {
     message: string;
   }
   try {
-    // Parse the incoming request
     const body: ChatRequest = await readBody(event);
-    console.log("body",body)
-    let {message} = body
- 
-    const response = await fetch(
-      "https://flowise-ob32.onrender.com/api/v1/prediction/1aa94af1-e393-46b0-b816-00d2551eac44",
-      {
-          headers: {
-               Authorization: `Bearer ${process.env.FLOWWISE_API_KEY}`,
-              "Content-Type": "application/json"
-          },
-          method: "POST",
-          body: JSON.stringify({"question":message})
-      }
-    );
+    const { message } = body;
 
-    const result = await response.json();
-   
-    return result;
- 
+    const response = await fetch("http://localhost:8000/chat", {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify({ message, history: [] }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Backend error: ${response.status}`);
+    }
+
+    const text = await response.text();
+    return { text };
+
   } catch (error) {
     console.error("Error in /api/chat server:", error);
     event.res.statusCode = 500;
-    return { reply: "I'm sorry, something went wrong on the server." };
+    return { text: "Es tut mir leid, etwas ist schiefgelaufen." };
   }
 });
