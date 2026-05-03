@@ -7,7 +7,7 @@
     <div :style="mb.header">
       <div :style="mb.brandRow">
         <div :style="mb.dot"></div>
-        <div class="mono" :style="mb.brand">ralf<span style="color:#3b82f6">.</span>chat</div>
+        <div class="mono" :style="mb.brand">ralf<span :style="{ color: HL }">.</span>chat</div>
         <div style="flex:1"></div>
         <button
           :style="{ ...mb.tabBtn, ...(view === 'home' ? mb.tabActive : {}) }"
@@ -30,12 +30,12 @@
           <span :style="mb.eyeDot"></span> session #2026.05 · live
         </div>
         <h1 class="display" :style="mb.h1">
-          Hi. Ich bin <span style="color:#3b82f6">Ralf</span>.<br/>
+          Hi. Ich bin <span :style="{ color: HL }">Ralf</span>.<br/>
           Eine API für Erfahrung.
         </h1>
         <p :style="mb.lede">
           20+ Jahre Web. Dev → Lead → Product Owner.
-          <strong style="color:#e6edf7">Wählen Sie ein Modul</strong> oder tippen Sie eine eigene Frage.
+          <strong style="color:#111">Wählen Sie ein Modul</strong> oder tippen Sie eine eigene Frage.
         </p>
         <div :style="mb.metricRow">
           <div :style="mb.metric">
@@ -86,15 +86,15 @@
         <div :style="mb.contactCard">
           <div class="mono" :style="mb.contactLine">
             <span style="color:#6b7a93">mail </span>
-            <a href="mailto:work@braitling.de" style="color:#22d3ee;text-decoration:none">work@braitling.de</a>
+            <a href="mailto:work@braitling.de" style="color:#111;text-decoration:none">work@braitling.de</a>
           </div>
           <div class="mono" :style="mb.contactLine">
-            <span style="color:#6b7a93">location </span>
-            <span style="color:#22d3ee">München</span>
+            <span style="color:#888">location </span>
+            <span style="color:#111">München</span>
           </div>
           <div class="mono" :style="mb.contactLine">
             <span style="color:#6b7a93">status </span>
-            <span style="color:#22c55e">● verfügbar ab Q3 · 2026</span>
+            <span style="color:#16a34a">● verfügbar ab Q3 · 2026</span>
           </div>
         </div>
       </div>
@@ -499,67 +499,65 @@ const mn = {
   sendArrow: { fontSize: '16px', fontWeight: 700 },
 };
 
-// ── Mobile styles ─────────────────────────────────────────────────
+// ── Mobile styles (same theme as desktop) ─────────────────────────
 const mb = {
-  root: { width: '100%', minHeight: '100dvh', background: '#0b1220', color: '#e6edf7', display: 'flex', flexDirection: 'column' as const, fontFamily: 'Inter, system-ui, sans-serif', backgroundImage: 'linear-gradient(oklch(0.32 0.06 240 / 0.16) 1px, transparent 1px), linear-gradient(90deg, oklch(0.32 0.06 240 / 0.16) 1px, transparent 1px)', backgroundSize: '24px 24px' },
-  header: { padding: '52px 16px 12px', borderBottom: '1px solid #1c2942', background: 'rgba(11,18,32,0.90)', backdropFilter: 'blur(8px)', flexShrink: 0 },
+  root: { width: '100%', minHeight: '100dvh', background: '#fff', color: '#111', display: 'flex', flexDirection: 'column' as const, fontFamily: 'Inter, system-ui, sans-serif' },
+  header: { padding: '52px 16px 12px', borderBottom: '1px solid #f0f0f0', background: '#fff', flexShrink: 0 },
   brandRow: { display: 'flex', alignItems: 'center', gap: '8px' },
-  dot: { width: '8px', height: '8px', borderRadius: '99px', background: '#3b82f6', animation: 'mb-pulse 2s infinite' },
-  brand: { fontSize: '14px', fontWeight: 600, letterSpacing: '-0.01em' },
-  tabBtn: { background: 'transparent', border: '1px solid #1c2942', color: '#aab8cf', fontSize: '11px', padding: '5px 10px', borderRadius: '99px', fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' },
-  tabActive: { background: '#3b82f6', borderColor: '#3b82f6', color: '#fff' },
-  badge: { background: 'rgba(255,255,255,0.25)', padding: '0 5px', borderRadius: '99px', fontSize: '9px' },
+  dot: { width: '8px', height: '8px', borderRadius: '99px', background: HL, animation: 'mn-pulse 2s infinite' },
+  brand: { fontSize: '15px', fontWeight: 600, letterSpacing: '-0.01em', color: '#111' },
+  tabBtn: { background: 'transparent', border: '1px solid #eaeaea', color: '#888', fontSize: '11px', padding: '5px 12px', borderRadius: '99px', fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' },
+  tabActive: { background: '#111', borderColor: '#111', color: '#fff' },
+  badge: { background: 'rgba(255,255,255,0.3)', padding: '0 5px', borderRadius: '99px', fontSize: '9px' },
   scrollArea: { flex: 1, overflowY: 'auto' as const, paddingBottom: '12px' },
-  intro: { padding: '20px 18px 16px' },
-  kicker: { fontSize: '10px', color: '#6b7a93', letterSpacing: '0.14em', textTransform: 'uppercase' as const, display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' },
-  eyeDot: { width: '6px', height: '6px', borderRadius: '99px', background: '#22c55e', display: 'inline-block' },
-  h1: { margin: 0, fontSize: '28px', fontWeight: 600, lineHeight: 1.1, letterSpacing: '-0.025em', color: '#e6edf7' },
-  lede: { margin: '12px 0 0', fontSize: '13.5px', lineHeight: 1.55, color: '#aab8cf' },
-  metricRow: { marginTop: '18px', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px', background: '#0f1a2e', border: '1px solid #1c2942', borderRadius: '10px' },
+  intro: { padding: '24px 20px 16px' },
+  kicker: { fontSize: '10px', color: '#888', letterSpacing: '0.14em', textTransform: 'uppercase' as const, display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' },
+  eyeDot: { width: '6px', height: '6px', borderRadius: '99px', background: '#16a34a', display: 'inline-block' },
+  h1: { margin: 0, fontFamily: "'Inter Tight', sans-serif", fontSize: '32px', fontWeight: 600, lineHeight: 1.05, letterSpacing: '-0.03em', color: '#111' },
+  lede: { margin: '12px 0 0', fontSize: '14px', lineHeight: 1.55, color: '#555' },
+  metricRow: { marginTop: '18px', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px', background: '#fafafa', border: '1px solid #f0f0f0', borderRadius: '10px' },
   metric: { display: 'flex', flexDirection: 'column' as const, gap: '2px' },
-  metricN: { fontSize: '24px', fontWeight: 600, lineHeight: 1, color: '#e6edf7', letterSpacing: '-0.04em' },
-  metricL: { fontSize: '9px', color: '#6b7a93', letterSpacing: '0.12em', textTransform: 'uppercase' as const },
-  metricSep: { width: '1px', height: '28px', background: '#1c2942' },
+  metricN: { fontSize: '24px', fontWeight: 600, lineHeight: 1, color: '#111', fontFamily: "'Inter Tight', sans-serif", letterSpacing: '-0.04em' },
+  metricL: { fontSize: '9px', color: '#888', letterSpacing: '0.12em', textTransform: 'uppercase' as const },
+  metricSep: { width: '1px', height: '28px', background: '#eaeaea' },
   section: { padding: '8px 16px' },
-  sectionHead: { fontSize: '10px', color: '#aab8cf', letterSpacing: '0.1em', padding: '12px 4px 10px', display: 'flex', justifyContent: 'space-between' },
+  sectionHead: { fontSize: '10px', color: '#888', letterSpacing: '0.1em', padding: '12px 4px 10px', display: 'flex', justifyContent: 'space-between', fontFamily: "'JetBrains Mono', monospace" },
   topicList: { display: 'flex', flexDirection: 'column' as const, gap: '6px' },
-  topicRow: { display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px', background: '#0f1a2e', border: '1px solid #1c2942', borderRadius: '8px', cursor: 'pointer', textAlign: 'left' as const, fontFamily: 'inherit', color: '#e6edf7', width: '100%' },
-  topicIdx: { fontSize: '10px', color: '#6b7a93', letterSpacing: '0.08em', width: '18px', flexShrink: 0 },
-  topicIcon: { width: '28px', height: '28px', borderRadius: '6px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', flexShrink: 0 },
+  topicRow: { display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px', background: '#fff', border: '1px solid #eaeaea', borderRadius: '8px', cursor: 'pointer', textAlign: 'left' as const, fontFamily: 'inherit', color: '#111', width: '100%', transition: 'border-color 0.15s ease' },
+  topicIdx: { fontSize: '10px', color: '#bbb', letterSpacing: '0.08em', width: '18px', flexShrink: 0, fontFamily: "'JetBrains Mono', monospace" },
+  topicIcon: { width: '28px', height: '28px', borderRadius: '6px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', flexShrink: 0 },
   topicMain: { flex: 1, minWidth: 0 },
-  topicLabel: { fontSize: '12px', color: '#e6edf7', letterSpacing: '0.02em' },
-  topicQ: { fontSize: '11.5px', color: '#aab8cf', marginTop: '2px', fontStyle: 'italic', lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const },
-  topicArr: { fontSize: '14px', color: '#6b7a93' },
-  contactCard: { background: '#0f1a2e', border: '1px solid #1c2942', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column' as const, gap: '6px' },
-  contactLine: { fontSize: '12px', lineHeight: 1.5 },
-  thread: { flex: 1, overflowY: 'auto' as const, padding: '16px 14px', display: 'flex', flexDirection: 'column' as const, gap: '12px' },
-  threadHead: { fontSize: '10px', color: '#6b7a93', letterSpacing: '0.1em', paddingBottom: '4px' },
-  empty: { flex: 1, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '40px', color: '#6b7a93' },
-  emptyMark: { width: '56px', height: '56px', borderRadius: '14px', border: '2px dashed #1c2942', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', color: '#6b7a93' },
-  emptyText: { fontSize: '16px', color: '#aab8cf' },
-  emptyBack: { marginTop: '8px', background: 'transparent', border: '1px solid #1c2942', color: '#aab8cf', padding: '7px 14px', borderRadius: '99px', fontSize: '12px', fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer' },
-  qRow: { display: 'flex', justifyContent: 'flex-end' },
-  qBubble: { maxWidth: '82%', background: '#1d4ed8', color: '#fff', padding: '8px 12px', borderRadius: '14px 14px 4px 14px' },
-  qLabel: { fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.6)', marginBottom: '2px' },
-  qText: { fontSize: '13.5px', lineHeight: 1.4 },
-  aRow: { display: 'flex', gap: '8px', alignItems: 'flex-start' },
-  aAvatar: { width: '28px', height: '28px', borderRadius: '99px', background: '#3b82f6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: '12px', flexShrink: 0 },
-  aBubble: { flex: 1, background: '#0f1a2e', border: '1px solid #1c2942', padding: '10px 12px', borderRadius: '4px 14px 14px 14px' },
-  aMeta: { fontSize: '9px', color: '#6b7a93', letterSpacing: '0.1em', marginBottom: '4px', textTransform: 'uppercase' as const },
-  aText: { fontSize: '13.5px', lineHeight: 1.5, color: '#e6edf7' },
-  tdot: { width: '5px', height: '5px', borderRadius: '99px', background: '#6b7a93', display: 'inline-block', margin: '0 2px', animation: 'mb-typing 1.2s infinite' },
-  composer: { padding: '8px 12px 16px', background: 'rgba(11,18,32,0.95)', borderTop: '1px solid #1c2942', backdropFilter: 'blur(8px)', flexShrink: 0 },
-  composerInner: { display: 'flex', alignItems: 'center', gap: '8px', background: '#0f1a2e', border: '1px solid #1c2942', borderRadius: '99px', padding: '6px 6px 6px 14px' },
-  input: { flex: 1, border: 'none', background: 'transparent', outline: 'none', fontSize: '14px', color: '#e6edf7', fontFamily: 'inherit', minWidth: 0 },
-  sendBtn: { width: '32px', height: '32px', borderRadius: '99px', border: 'none', background: '#3b82f6', color: '#fff', cursor: 'pointer', fontSize: '14px', fontWeight: 700, flexShrink: 0 },
+  topicLabel: { fontSize: '13px', color: '#111', fontWeight: 500 },
+  topicQ: { fontSize: '11.5px', color: '#888', marginTop: '2px', lineHeight: 1.35, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const },
+  topicArr: { fontSize: '14px', color: '#bbb' },
+  contactCard: { background: '#fafafa', border: '1px solid #f0f0f0', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column' as const, gap: '6px' },
+  contactLine: { fontSize: '12px', lineHeight: 1.5, fontFamily: "'JetBrains Mono', monospace", color: '#555' },
+  thread: { flex: 1, overflowY: 'auto' as const, padding: '16px 16px', display: 'flex', flexDirection: 'column' as const, gap: '16px' },
+  threadHead: { fontSize: '10px', color: '#bbb', letterSpacing: '0.1em', paddingBottom: '4px', fontFamily: "'JetBrains Mono', monospace" },
+  empty: { flex: 1, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '40px', color: '#bbb' },
+  emptyMark: { width: '56px', height: '56px', borderRadius: '14px', border: '2px dashed #eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', color: '#ccc' },
+  emptyText: { fontSize: '16px', color: '#888', fontFamily: "'Inter Tight', sans-serif" },
+  emptyBack: { marginTop: '8px', background: 'transparent', border: '1px solid #eaeaea', color: '#555', padding: '7px 16px', borderRadius: '99px', fontSize: '12px', fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer' },
+  qRow: { display: 'flex', justifyContent: 'flex-start' },
+  qBubble: { maxWidth: '82%', background: '#fff', border: '1px solid #eaeaea', color: '#111', padding: '10px 14px', borderRadius: '14px 14px 14px 4px' },
+  qLabel: { fontSize: '9px', letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: '#bbb', marginBottom: '4px', fontFamily: "'JetBrains Mono', monospace" },
+  qText: { fontSize: '14px', lineHeight: 1.4, color: '#111', fontWeight: 500 },
+  aRow: { display: 'flex', gap: '10px', alignItems: 'flex-start' },
+  aAvatar: { width: '28px', height: '28px', borderRadius: '99px', background: HL, color: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '11px', flexShrink: 0, fontFamily: "'Inter Tight', sans-serif" },
+  aBubble: { flex: 1, background: '#fafafa', border: '1px solid #f0f0f0', padding: '10px 14px', borderRadius: '4px 14px 14px 14px' },
+  aMeta: { fontSize: '9px', color: '#bbb', letterSpacing: '0.1em', marginBottom: '4px', textTransform: 'uppercase' as const, fontFamily: "'JetBrains Mono', monospace" },
+  aText: { fontSize: '14px', lineHeight: 1.55, color: '#222' },
+  tdot: { width: '5px', height: '5px', borderRadius: '99px', background: '#bbb', display: 'inline-block', margin: '0 2px', animation: 'mn-typing 1.2s infinite' },
+  composer: { padding: '8px 14px 16px', background: '#fff', borderTop: '1px solid #f0f0f0', flexShrink: 0 },
+  composerInner: { display: 'flex', alignItems: 'center', gap: '8px', background: '#fafafa', border: '1px solid #eaeaea', borderRadius: '99px', padding: '6px 6px 6px 16px' },
+  input: { flex: 1, border: 'none', background: 'transparent', outline: 'none', fontSize: '14px', color: '#111', fontFamily: 'inherit', minWidth: 0 },
+  sendBtn: { width: '34px', height: '34px', borderRadius: '99px', border: 'none', background: HL, color: '#111', cursor: 'pointer', fontSize: '15px', fontWeight: 700, flexShrink: 0 },
 };
 </script>
 
 <style>
 @keyframes mn-pulse  { 0%,100% { transform:scale(1);  opacity:1   } 50% { transform:scale(0.6); opacity:0.5 } }
 @keyframes mn-typing { 0%,60%,100% { transform:translateY(0); opacity:0.4 } 30% { transform:translateY(-3px); opacity:1 } }
-@keyframes mb-pulse  { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
-@keyframes mb-typing { 0%,60%,100% { transform:translateY(0); opacity:0.4 } 30% { transform:translateY(-2px); opacity:1 } }
 
 .mn-body {
   flex: 1;
