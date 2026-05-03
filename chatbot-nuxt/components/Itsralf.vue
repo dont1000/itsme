@@ -1,688 +1,599 @@
 <template>
-  <div>
-    <ChatMobile
-      v-if="isMobile && openMobileChat"
-      :messages="messages"
-      :isLoading="isLoading"
-      @submit="handleSubmitMobile"
-      v-model:openMobileChat="openMobileChat"
-    />
-    <div class="container" v-if="!openMobileChat">
-      <div class="header">
-        <span class="brand">RalfBot <span style="font-size:11px;font-weight:300;"> beta</span> <div class="subline">Die smarte Art, Ralf kennenzulernen </div></span>
-       
-        <span>
-          <a href="mailto:work@braitling.de"
-            ><cst-button class="cst-button"
-              ><span class="primary">@</span>Contact</cst-button
-            ></a
-          ></span
-        >
+  <div :style="mn.root">
+
+    <!-- Nav -->
+    <nav :style="mn.nav">
+      <div :style="mn.brand">
+        <div :style="{ ...mn.brandSquare, background: HL }"></div>
+        <span :style="mn.brandName">Ralf</span>
+        <span :style="mn.brandSlash">/</span>
+        <span :style="mn.brandRole">Personal Bot</span>
+      </div>
+      <div :style="mn.navRight">
+        <span :style="mn.navLink">About</span>
+        <span :style="mn.navLink">Work</span>
+        <span :style="mn.navLink">CV</span>
+        <a href="mailto:work@braitling.de" :style="{ ...mn.navCta, background: HL }">
+          Kontakt <span style="margin-left: 6px">→</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Body -->
+    <div class="mn-body">
+
+      <!-- LEFT: hero + topics + stats -->
+      <div :style="mn.left">
+        <div :style="mn.kicker">
+          <span :style="{ ...mn.kickerDot, background: HL }"></span>
+          <span :style="mn.kickerText">Verfügbar ab Q3 · 2026</span>
+        </div>
+
+        <h1 :style="mn.h1">
+          Stell mir<br />
+          <span :style="mn.h1Highlight">
+            eine Frage
+            <svg :style="mn.underline" viewBox="0 0 480 14" preserveAspectRatio="none">
+              <path
+                d="M2 8 Q 120 2, 240 7 T 478 6"
+                :stroke="HL"
+                stroke-width="6"
+                fill="none"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span><br />
+          <span :style="mn.h1Light">statt zu lesen.</span>
+        </h1>
+
+        <p :style="mn.lede">
+          20 Jahre Web — vom Entwickler zum Product Owner.
+          Ein Chatbot, der für mich antwortet. Klar. Persönlich. Kurz.
+        </p>
+
+        <!-- Topic chips -->
+        <div :style="mn.topicWrap">
+          <div :style="mn.topicLabel">
+            <span :style="mn.topicLabelNum">08</span>
+            <span>Themen — eines wählen, oder eigene Frage stellen</span>
+          </div>
+          <div class="mn-topic-grid">
+            <button
+              v-for="t in topics"
+              :key="t.id"
+              @mouseenter="hoveredId = t.id"
+              @mouseleave="hoveredId = null"
+              @click="pick(t)"
+              :disabled="isLoading"
+              :style="{
+                ...mn.topic,
+                background: askedTopics.has(t.id) ? HL : hoveredId === t.id ? '#fafafa' : '#fff',
+                borderColor: askedTopics.has(t.id) ? HL : hoveredId === t.id ? '#111' : '#eaeaea',
+              }"
+            >
+              <span :style="mn.topicNum">{{ t.n }}</span>
+              <span :style="mn.topicName">{{ t.label }}</span>
+              <span :style="{
+                ...mn.topicArrow,
+                transform: hoveredId === t.id || askedTopics.has(t.id) ? 'translateX(0)' : 'translateX(-4px)',
+                opacity: hoveredId === t.id || askedTopics.has(t.id) ? 1 : 0.4,
+              }">↗</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div :style="mn.stats">
+          <div :style="mn.stat">
+            <div :style="mn.statN">20<span :style="mn.statPlus">+</span></div>
+            <div :style="mn.statL">Jahre</div>
+          </div>
+          <div :style="mn.statSep"></div>
+          <div :style="mn.stat">
+            <div :style="mn.statN">03</div>
+            <div :style="mn.statL">Rollen</div>
+          </div>
+          <div :style="mn.statSep"></div>
+          <div :style="mn.stat">
+            <div :style="mn.statN">∞</div>
+            <div :style="mn.statL">Fragen</div>
+          </div>
+          <div :style="mn.statSep"></div>
+          <div :style="mn.stat">
+            <div :style="{ ...mn.statN, color: HL_DEEP }">●</div>
+            <div :style="mn.statL">Live · Claude</div>
+          </div>
+        </div>
       </div>
 
-      <div class="two-column-layout" v-if="!openMobileChat">
-        <div
-          class="left-column"
-          v-if="(isMobile && !openMobileChat) || !isMobile"
-        >
-          <div class="content">
-            <h1>
-              <div class="secondary">Hallo, ich bin Ralf from itsme repo.
-              <div>Schön, Sie kennenzulernen.</div> 
+      <!-- RIGHT: chat panel -->
+      <div :style="mn.right">
+        <div :style="mn.chatHead">
+          <div :style="mn.chatHeadLeft">
+            <div :style="{ ...mn.statusOrb, background: HL }">
+              <div :style="mn.statusOrbInner"></div>
             </div>
-            </h1>
             <div>
-              <!-- <p>
-              seit 20 Jahren+ im Web-Business – von Agenturen über Startups bis
-              zum eigenen Business.
-            </p> -->
-
-              <p>
-                Ich arbeite seit über 20 Jahren an webbasierten Lösungen ;) - von der Entwicklung über Teamführung bis hin zur Rolle als Product Owner.
-              </p>
-              <p>
-                Damit sie mich besser kennenlernen können, habe ich diesen Chatbot entwickelt: Mit RalfBot erhalten sie direkt Antworten auf die gängigsten <span class="highlight">Interviewfragen</span> zu Stärken, Motivation und Erfahrung.
-              </p>
-
-             <!--  <p>
-                What drives me? Turning ideas into real, useful products. With a solid tech background, a collaborative mindset, and a feel for what’s feasible, I help teams move forward—without losing sight of the people we’re building for."
-
-              </p> -->
-               <!-- <p class="primary" v-if="isMobile">
-                <span class="cta-text"
-                  ><b>Curious to know more?</b><br>
-                    ask AI-Ralf anything about work, experience, or
-                    skills.
-                  </span>
-              </p> -->
+              <div :style="mn.chatTitle">Im Gespräch</div>
+              <div :style="mn.chatSub">Antwort in ~2 Sek.</div>
             </div>
-
-            <div
-              class="chat-trigger"
-              v-if="isMobile"
-              @click="openMobileChat = true"
-            >
-              <img
-                src="~/assets/images/background-image.png"
-                alt="Background"
-              /><img />
-              <button>mit RalfBot sprechen</button>
-            </div>
+          </div>
+          <div :style="mn.chatHeadCount">
+            <span :style="mn.countN">{{ Math.ceil(messages.length / 2) }}</span>
+            <span :style="mn.countL">Fragen heute</span>
           </div>
         </div>
 
-        <div class="right-column" v-if="!isMobile">
-          <div class="chat-container">
-            <MessageBubble
-              :messages="messages"
-              :isLoading="isLoading"
-            />
-           
-            <form @submit.prevent="handleSubmit" class="chat-form">
-              <div class="input-container">
-                <input
-                  v-model="input"
-                  ref="inputRef"
-                  type="text"
-                  placeholder="Frage eingeben..."
-                  :disabled="isLoading"
-                  @keyup.enter="callOnEnter"
-                />
-                <img
-                  src="@/assets/images/Vector.svg"
-                  alt="Send"
-                  class="send-icon"
-                  @click="handleSubmit"
-                />
+        <div ref="scrollRef" :style="mn.thread">
+          <div v-if="messages.length === 0 && !isLoading" :style="mn.empty">
+            <div :style="{ ...mn.emptyTick, background: HL }"></div>
+            <div :style="mn.emptyTitle">Bereit, wenn Sie es sind.</div>
+            <div :style="mn.emptySub">
+              Wählen Sie ein Thema links — oder tippen Sie unten Ihre eigene Frage.
+            </div>
+          </div>
+
+          <template v-for="(m, i) in messages" :key="i">
+            <div v-if="m.role === 'user'" :style="mn.qWrap">
+              <div :style="mn.qLine"></div>
+              <div :style="mn.qBubble">
+                <div :style="mn.qLabel">Sie fragen</div>
+                <div :style="mn.qText">{{ m.text }}</div>
               </div>
-            </form>
+            </div>
+            <div v-else :style="mn.aWrap">
+              <div :style="{ ...mn.aSpine, background: HL }"></div>
+              <div :style="mn.aBubble">
+                <div :style="mn.aMeta">
+                  <span :style="mn.aName">Ralf</span>
+                  <span :style="mn.aDot">·</span>
+                  <span :style="mn.aTime">{{ messageTimes[i] }}</span>
+                </div>
+                <div :style="mn.aText">{{ m.text }}</div>
+              </div>
+            </div>
+          </template>
+
+          <div v-if="isLoading" :style="mn.aWrap">
+            <div :style="{ ...mn.aSpine, background: HL }"></div>
+            <div :style="mn.aBubble">
+              <div :style="mn.aMeta">
+                <span :style="mn.aName">Ralf</span>
+                <span :style="mn.aDot">·</span>
+                <span :style="mn.aTime">denkt nach</span>
+              </div>
+              <div :style="mn.typing">
+                <span :style="mn.tdot"></span>
+                <span :style="{ ...mn.tdot, animationDelay: '.15s' }"></span>
+                <span :style="{ ...mn.tdot, animationDelay: '.3s' }"></span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <form @submit.prevent="handleSubmit" :style="mn.composer">
+          <input
+            v-model="input"
+            placeholder="Eigene Frage stellen…"
+            :style="mn.input"
+            :disabled="isLoading"
+          />
+          <button
+            type="submit"
+            :disabled="isLoading || !input.trim()"
+            :style="{
+              ...mn.sendBtn,
+              background: input.trim() ? HL : '#f0f0f0',
+              color: input.trim() ? '#111' : '#bbb',
+              cursor: input.trim() && !isLoading ? 'pointer' : 'default',
+            }"
+          >
+            Senden <span :style="mn.sendArrow">↑</span>
+          </button>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import type { Message } from "@/types/chat";
-import MessageBubble from './MessageBubble.vue';
-interface ChatResponse {
-  text: string;
-}
+import { ref, watch, nextTick } from 'vue';
+import type { Message } from '@/types/chat';
 
-interface ChatRequest {
-  message: string;
-}
+const HL = '#D4F542';
+const HL_DEEP = '#A8C932';
 
-const inputRef = ref<HTMLInputElement | null>(null);
-// Conversation state
 const messages = ref<Message[]>([]);
-const input = ref<string>("");
-const isLoading = ref<boolean>(false);
-const expandedMessages = ref<Record<number, boolean>>({});
+const messageTimes = ref<Record<number, string>>({});
+const input = ref('');
+const isLoading = ref(false);
+const askedTopics = ref(new Set<string>());
+const hoveredId = ref<string | null>(null);
+const scrollRef = ref<HTMLElement | null>(null);
 
-// mobile state
-const openMobileChat = ref<boolean>(false);
-const isMobile = ref<boolean>();
-const updateIsMobile = () => {
-  isMobile.value = window.innerWidth < 900;
-};
+const topics = [
+  { id: 'staerken', n: '01', label: 'Stärken',  q: 'Was sind deine größten Stärken?' },
+  { id: 'projekt',  n: '02', label: 'Projekte', q: 'Erzähl mir von einem erfolgreichen Projekt.' },
+  { id: 'team',     n: '03', label: 'Team',     q: 'Wie arbeitest du im Team?' },
+  { id: 'po',       n: '04', label: 'Product',  q: 'Was reizt dich an Product Ownership?' },
+  { id: 'konflikt', n: '05', label: 'Konflikt', q: 'Wie gehst du mit Konflikten um?' },
+  { id: 'ai',       n: '06', label: 'AI · Tools', q: 'Wie nutzt du AI in deiner Arbeit?' },
+  { id: 'lernen',   n: '07', label: 'Lernen',   q: 'Wie hältst du dein Wissen aktuell?' },
+  { id: 'hire',     n: '08', label: 'Warum du', q: 'Warum sollten wir dich einstellen?' },
+];
 
-// Add event listener on mount and remove it on unmount
-onMounted(() => {
-  updateIsMobile(); // Initial check
-  window.addEventListener("resize", updateIsMobile);
-  inputRef.value?.focus();
-});
+function now() {
+  return new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
 
-onUnmounted(() => {
-  window.removeEventListener("resize", updateIsMobile);
-});
+function pick(t: typeof topics[number]) {
+  askedTopics.value = new Set([...askedTopics.value, t.id]);
+  updateChat(t.q);
+}
 
-const handleSubmitMobile = async (message: string) => {
-  updateChat(message);
-};
-
-const handleSubmit = async (): Promise<void> => {
-  const message: string = input.value;
-  input.value = "";
-  updateChat(message);
-};
-
-const callOnEnter = () => {
-  handleSubmit();
+const handleSubmit = () => {
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  updateChat(msg);
 };
 
 const updateChat = async (message: string) => {
-  if (message.trim() == "") {
-    return;
-  }
-  messages.value.unshift({
-    role: "user",
-    text: message,
-  });
+  messages.value.push({ role: 'user', text: message });
   const response = await fetchAnswer(message);
-  // const response = {
-  //   text: "Dies ist eine Testantwort von Ralf, lange Antwort, die mehr als 100px hoch ist. Dies lange Antwort, die mehr als 100px hoch ist Dies ist eine Testantwort von Ralf, lange Antwort, die mehr als 100px hoch ist. Dies lange Antwort, die mehr als 100px hoch ist Dies ist eine Testantwort von Ralf, lange Antwort, die mehr als 100px hoch ist. Dies lange Antwort, die mehr als 100px hoch ist",
-  // };
-
-  messages.value.unshift({
-    role: "assistant",
-    text: response.text,
-  });
-
-  console.log("reponse", response);
-  console.log("messges", messages.value);
+  const idx = messages.value.length;
+  messageTimes.value[idx] = now();
+  messages.value.push({ role: 'assistant', text: response.text });
 };
 
-const fetchAnswer = async (message: string): Promise<ChatResponse> => {
+const fetchAnswer = async (message: string): Promise<{ text: string }> => {
   isLoading.value = true;
   try {
-    const response: ChatResponse = await $fetch("/api/chat", {
-      method: "POST",
-      body: {
-        message: message,
-      },
+    return await $fetch<{ text: string }>('/api/chat', {
+      method: 'POST',
+      body: { message },
     });
-    return response;
-  } catch (error) {
-    console.error("Error fetching assistant response:", error);
-    throw error;
+  } catch {
+    return { text: 'Es tut mir leid, etwas ist schiefgelaufen.' };
   } finally {
     isLoading.value = false;
   }
 };
 
-const isMessageTooLong = (content: string) => {
-  const tempDiv = document.createElement("div");
-  tempDiv.style.width = "247px"; // max-width of message
-  tempDiv.style.fontSize = "0.875rem";
-  tempDiv.style.lineHeight = "1rem";
-  tempDiv.innerText = content;
-  document.body.appendChild(tempDiv);
-  const height = tempDiv.offsetHeight;
-  document.body.removeChild(tempDiv);
-  return height > 100;
-};
+watch([messages, isLoading], () => {
+  nextTick(() => {
+    if (scrollRef.value) scrollRef.value.scrollTop = scrollRef.value.scrollHeight;
+  });
+});
 
-const toggleMessage = (index: number) => {
-  expandedMessages.value[index] = !expandedMessages.value[index];
+const mn = {
+  root: {
+    background: '#ffffff',
+    color: '#111',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    minHeight: '100vh',
+  },
+  nav: {
+    height: '64px',
+    padding: '0 40px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottom: '1px solid #f0f0f0',
+    flexShrink: 0,
+  },
+  brand: { display: 'flex', alignItems: 'center', gap: '12px' },
+  brandSquare: { width: '18px', height: '18px', borderRadius: '4px' },
+  brandName: { fontSize: '16px', fontWeight: 600, letterSpacing: '-0.01em' },
+  brandSlash: { color: '#ccc', fontWeight: 300 },
+  brandRole: { fontSize: '14px', color: '#888' },
+  navRight: { display: 'flex', alignItems: 'center', gap: '28px' },
+  navLink: { fontSize: '14px', color: '#555', cursor: 'pointer' },
+  navCta: {
+    padding: '8px 16px',
+    borderRadius: '99px',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: '#111',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    textDecoration: 'none',
+  },
+
+  left: {
+    padding: '40px 48px',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '28px',
+    minHeight: 0,
+    overflow: 'hidden',
+  },
+  kicker: { display: 'flex', alignItems: 'center', gap: '8px' },
+  kickerDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '99px',
+    animation: 'mn-pulse 2s infinite',
+  },
+  kickerText: {
+    fontSize: '12px',
+    color: '#666',
+    fontFamily: "'JetBrains Mono', monospace",
+    letterSpacing: '0.02em',
+  },
+  h1: {
+    margin: 0,
+    fontFamily: "'Inter Tight', sans-serif",
+    fontSize: '72px',
+    fontWeight: 600,
+    lineHeight: 0.96,
+    letterSpacing: '-0.035em',
+    color: '#111',
+  },
+  h1Highlight: { position: 'relative' as const, display: 'inline-block' },
+  h1Light: { fontWeight: 300, color: '#888', fontStyle: 'italic' },
+  underline: {
+    position: 'absolute' as const,
+    left: 0,
+    right: 0,
+    bottom: '-8px',
+    width: '100%',
+    height: '14px',
+  },
+  lede: {
+    margin: 0,
+    fontSize: '16px',
+    lineHeight: 1.55,
+    maxWidth: '480px',
+    color: '#555',
+  },
+  topicWrap: { display: 'flex', flexDirection: 'column' as const, gap: '12px' },
+  topicLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    fontSize: '11px',
+    color: '#888',
+    fontFamily: "'JetBrains Mono', monospace",
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.1em',
+  },
+  topicLabelNum: {
+    background: '#111',
+    color: '#fff',
+    padding: '2px 6px',
+    borderRadius: '4px',
+  },
+  topic: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '14px',
+    border: '1px solid #eaeaea',
+    borderRadius: '8px',
+    fontFamily: 'inherit',
+    fontSize: '14px',
+    fontWeight: 500,
+    cursor: 'pointer',
+    textAlign: 'left' as const,
+    transition: 'all 0.18s ease',
+  },
+  topicNum: {
+    fontSize: '11px',
+    color: '#999',
+    fontFamily: "'JetBrains Mono', monospace",
+    fontWeight: 400,
+  },
+  topicName: { flex: 1 },
+  topicArrow: { fontSize: '13px', color: '#111', transition: 'all 0.18s ease' },
+
+  stats: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '28px',
+    padding: '20px 0',
+    borderTop: '1px solid #f0f0f0',
+    marginTop: 'auto',
+  },
+  stat: { display: 'flex', flexDirection: 'column' as const, gap: '4px' },
+  statN: {
+    fontSize: '32px',
+    fontWeight: 600,
+    lineHeight: 1,
+    color: '#111',
+    fontFamily: "'Inter Tight', sans-serif",
+    letterSpacing: '-0.04em',
+  },
+  statPlus: { fontSize: '16px', color: '#888' },
+  statL: {
+    fontSize: '11px',
+    color: '#888',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.1em',
+  },
+  statSep: { width: '1px', height: '32px', background: '#f0f0f0' },
+
+  right: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    minHeight: 0,
+    borderLeft: '1px solid #f0f0f0',
+    background: '#fafafa',
+  },
+  chatHead: {
+    padding: '24px 32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottom: '1px solid #f0f0f0',
+    background: '#fff',
+    flexShrink: 0,
+  },
+  chatHeadLeft: { display: 'flex', alignItems: 'center', gap: '14px' },
+  statusOrb: {
+    width: '36px',
+    height: '36px',
+    borderRadius: '99px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusOrbInner: {
+    width: '10px',
+    height: '10px',
+    borderRadius: '99px',
+    background: '#111',
+    animation: 'mn-pulse 2s infinite',
+  },
+  chatTitle: { fontSize: '14px', fontWeight: 600, color: '#111' },
+  chatSub: { fontSize: '12px', color: '#888', marginTop: '2px' },
+  chatHeadCount: { display: 'flex', flexDirection: 'column' as const, alignItems: 'flex-end' },
+  countN: {
+    fontSize: '22px',
+    fontWeight: 600,
+    color: '#111',
+    fontFamily: "'Inter Tight', sans-serif",
+  },
+  countL: {
+    fontSize: '10px',
+    color: '#888',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.1em',
+  },
+  thread: {
+    flex: 1,
+    overflowY: 'auto' as const,
+    padding: '28px 32px',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '22px',
+    minHeight: 0,
+  },
+  empty: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    gap: '14px',
+    padding: '40px 0',
+  },
+  emptyTick: { width: '64px', height: '4px', borderRadius: '99px' },
+  emptyTitle: {
+    fontSize: '28px',
+    fontWeight: 600,
+    color: '#111',
+    fontFamily: "'Inter Tight', sans-serif",
+    letterSpacing: '-0.02em',
+  },
+  emptySub: { fontSize: '14px', color: '#888', maxWidth: '320px', lineHeight: 1.5 },
+
+  qWrap: { display: 'flex', alignItems: 'flex-start', gap: '14px' },
+  qLine: { width: '2px', alignSelf: 'stretch', background: '#111', borderRadius: '1px', flexShrink: 0 },
+  qBubble: { flex: 1 },
+  qLabel: {
+    fontSize: '11px',
+    color: '#888',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.12em',
+    marginBottom: '6px',
+    fontFamily: "'JetBrains Mono', monospace",
+  },
+  qText: { fontSize: '18px', lineHeight: 1.4, color: '#111', fontWeight: 500, letterSpacing: '-0.01em' },
+
+  aWrap: { display: 'flex', alignItems: 'flex-start', gap: '14px' },
+  aSpine: { width: '2px', alignSelf: 'stretch', borderRadius: '1px', flexShrink: 0 },
+  aBubble: { flex: 1 },
+  aMeta: { display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' },
+  aName: { fontSize: '12px', fontWeight: 600, color: '#111', textTransform: 'uppercase' as const, letterSpacing: '0.1em' },
+  aDot: { color: '#ccc' },
+  aTime: { fontSize: '11px', color: '#888', fontFamily: "'JetBrains Mono', monospace" },
+  aText: { fontSize: '15px', lineHeight: 1.65, color: '#222' },
+
+  typing: { display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 0' },
+  tdot: {
+    width: '7px',
+    height: '7px',
+    borderRadius: '99px',
+    background: '#111',
+    display: 'inline-block',
+    animation: 'mn-typing 1.2s infinite',
+  },
+
+  composer: {
+    padding: '16px 24px 24px',
+    display: 'flex',
+    gap: '10px',
+    alignItems: 'center',
+    background: '#fff',
+    borderTop: '1px solid #f0f0f0',
+    flexShrink: 0,
+  },
+  input: {
+    flex: 1,
+    height: '52px',
+    border: '1px solid #eaeaea',
+    borderRadius: '99px',
+    padding: '0 22px',
+    fontFamily: 'inherit',
+    fontSize: '15px',
+    color: '#111',
+    outline: 'none',
+    background: '#fff',
+  },
+  sendBtn: {
+    height: '52px',
+    padding: '0 22px',
+    borderRadius: '99px',
+    border: 'none',
+    fontFamily: 'inherit',
+    fontSize: '14px',
+    fontWeight: 600,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.18s ease',
+    flexShrink: 0,
+  },
+  sendArrow: { fontSize: '16px', fontWeight: 700 },
 };
 </script>
 
-<style scoped>
-
-h1{
-  font-size:2.1rem;
-  line-height: 2.5rem;
+<style>
+@keyframes mn-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.6); opacity: 0.5; }
 }
-.container {
-  width: 100%;
-  min-height: 100vh;
-  max-width: 100% !important;
-  background-color: rgb(255, 243, 227);
+@keyframes mn-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-3px); opacity: 1; }
 }
 
-.two-column-layout {
-  display: flex;
-  width: 100%;
-  gap: 2rem;
-  padding: 0 3rem;
-  /*height: 100%;  Adjust the 60px based on your header height */
-  background-color: rgb(255, 243, 227);
-}
-.left-column {
-  width: 30%;
-}
-
-.right-column {
-  width: 70%;
-}
-
-.left-column > .content {
-  width: 100%;
-  margin-top: 3rem;
-  font-size: 0.925rem;
-}
-
-.header {
-  display: flex;
-  width: 100%;
-  height: 65px;
-  padding: 3rem 3rem;
-  align-items: center;
-  flex-shrink: 0;
-  color: #0396ff;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 20px;
-  justify-content: space-between;
-}
-.brand{
- 
-  font-family: 'Quicksand', sans-serif;
-
-}
-.subline{
-  font-size: 0.8rem;
-  font-weight: 400;
-  color:#000;
-}
-
-.highlight{
-  background-color: rgba(3, 150, 255, 0.25);
-  padding:0.1em 0.3em; 
-}
-
-.chat-trigger {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  align-items: center;
-  margin-bottom: 5rem;
-
-  img {
-    width: 12rem;
-    object-fit: cover;
-  }
-
-  button {
-    background-color: #0396ff;
-    color: white;
-    padding: 0.75rem 1rem;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    font-weight: 500;
-    font-size: 18px;
-    width: 40%;
-    align-self: center;
-  }
-}
-
-.btn-back {
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  border: none;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0 2rem 1rem;
-  z-index: 1990;
-  position: relative;
-  display: none;
-}
-
-.btn-back img {
-  width: 15px;
-  height: 15px;
-}
-
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
-  padding: 1rem;
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 200px);
-}
-
-.chat-container::after {
-  content: "";
-  position: absolute;
-  top: 2rem;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    40.7% 50.7% at 50% 50%,
-    #0396ff 0%,
-    rgba(255, 243, 227, 0%) 100%
-  );
-  background-repeat: no-repeat;
-  background-size: contain;
-  z-index: 6;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  pointer-events: none;
-}
-
-.chat-container::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  bottom: 1rem;
-  width: 50%;
-  height: 50%;
-  background-image: url("@/assets/images/background-image.png");
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  z-index: 28;
-}
-
-.messages {
+.mn-body {
   flex: 1;
-  position: absolute;
-  z-index: 99;
-  display: flex;
-  flex-direction: column-reverse;
-
-  width: 100%;
-  overflow-y: auto;
-  height: calc(100% - 70px);
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 0;
+  height: calc(100vh - 64px);
 }
 
-.message {
-  position: relative;
-  padding: 1.2rem 0.9rem;
-  margin-bottom: 2rem;
-  min-width: 100px;
-  max-width: 300px;
-  font-size: 0.875rem;
-  line-height: 1rem;
-  min-height: auto; /* Remove fixed min-height */
-  border-width: 0px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-  border-bottom-left-radius: 30px;
-}
-
-.message.user {
-  background-color: #fff;
-  text-align: left;
-  /* border-top-right-radius: 0; */
-  margin-right: 400px;
-  /* align-self: flex-start; */
-}
-
-.message.assistant {
-  background-color: #0396ff;
-  border-bottom-left-radius: 0;
-  color: #fff;
-  text-align: left;
-  margin-left: 31rem;
-  /* align-self: flex-end; */
-}
-.message.user::after {
-  content: "";
-  position: absolute;
-  bottom: 0px;
-  left: -20px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 20px 40px 0 0;
-  border-color: transparent #fff transparent transparent;
-  /* rotate: 0deg; */
-  transform: rotate(0deg);
-}
-
-.message.assistant::after {
-  content: "";
-  position: absolute;
-  bottom: 0px;
-  left: -35px;
-  width: 0;
-  height: 0;
-  /* border: 3px solid red; */
-  border-width: 30px 0 00px 30px;
-  border-color: #0396ff transparent transparent transparent;
-  border-width: 20px 50px 0px 0;
-  border-color: transparent #0396ff transparent transparent;
-  transform: rotate(0deg);
-}
-
-.message.assistant.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.message.assistant.loading .dot {
-  width: 6px;
-  height: 6px;
-  background-color: #fff;
-  border-radius: 50%;
-  animation: dot-flash 1.5s infinite;
-}
-
-.message.assistant.loading .dot:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.message.assistant.loading .dot:nth-child(2) {
-  animation-delay: 0.3s;
-}
-
-.message.assistant.loading .dot:nth-child(3) {
-  animation-delay: 0.6s;
-}
-
-@keyframes dot-flash {
-  0%,
-  20% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-}
-
-.chat-form {
-  display: flex;
-  justify-content: center;
-}
-
-.input-container {
-  position: absolute;
-  width: 65%; /* Container width */
-  bottom: -1.5rem;
-  margin-left: -3rem;
-}
-
-.input-container::before {
-  content: "";
-  position: absolute;
-  display: block;
-  background-image: url("~/assets/images/callout.svg");
-  left: -157px;
-  top: -86px;
-  height: 150px;
-  background-repeat: no-repeat;
-  width: 200px;
-  background-size: contain;
-  z-index: 999;
-}
-
-.chat-form input {
-  width: 100% !important; /* Force width to fill container */
-  padding: 0.5rem;
-  padding-right: 2.5rem; /* Make room for icon */
-  font-size: 1rem;
-  border-radius: 5px;
-  box-shadow: 0px 4px 4px 0px #00000040 inset;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-}
-
-.send-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px; /* Adjust size as needed */
-  height: 20px;
-  cursor: pointer;
-}
-
-.chat-form button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-}
-
-.background-image {
-  width: 100%;
-  height: 500px;
-  position: relative;
-  overflow: visible;
-}
-
-.message-content {
-  max-height: 97px;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-}
-
-.message-content.expanded {
-  max-height: none;
-}
-
-.expand-button {
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  padding: 4px;
-  margin-top: 8px;
-  text-decoration: underline;
-}
-
-.cta-text {
-  display: block;
+.mn-topic-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
 }
 
 @media (max-width: 900px) {
-  .header {
-    font-size: 20px;
-    padding: 1rem 2.5rem;
+  .mn-body {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: auto;
   }
-  .two-column-layout {
-    flex-direction: column;
-    padding: 0;
-  }
-  .left-column {
-    width: 100%;
-    margin-top: 3rem;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-
-  .right-column {
-    width: 100%;
-
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  .left-column > .content {
-    margin-top: 0;
-  }
-  .btn-back {
-    display: flex;
-  }
-
-  .cta-text {
-    margin-top: 5rem;
-    text-align: center;
-  }
-  .cta-text span {
-    display: block;
-  }
-  .chat-container {
-    height: calc(-250px + 100vh);
-    padding: 0;
-  }
-
-  .input-container {
-    width: 100%; /* Container width */
-    bottom: -1.5rem;
-    margin-left: 0rem;
-  }
-  .chat-container::before {
-    opacity: 0.5;
-  }
-  .chat-container::after {
-    background-image: none;
-  }
-  .message.user {
-    margin-right: 0;
-    width: 85%;
-    align-self: flex-start;
-  }
-  .message.message.assistant {
-    margin-left: 0;
-    width: 85%;
-    align-self: flex-end;
-  }
-
-  .message.user::after {
-    bottom: 0px;
-    right: -31px;
-    left: auto;
-    border-width: 20px 0px 0px 50px;
-    border-color: transparent transparent transparent #fff;
-    transform: rotate(0deg);
-  }
-  .btn-back {
-    display: flex;
-  }
-  .chat-trigger button {
-    width: 80%;
-  }
-}
-
-@media (max-width: 410px) {
-  .chat-trigger button {
-    width: 80%;
+  .mn-topic-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>
-
-<!-- .background-image::before {
-  /*content: "";*/
-  position: absolute;
-  top: -200px;
-  left: 0;
-  width: 100%;
-  height: calc(100% + 200px);
-  background: radial-gradient(
-    45.7% 54.7% at 50% 50%,
-    #0396ff 0%,
-    rgba(255, 243, 227, 0.44) 100%
-  );
-    background-size:cover;
-  z-index: 1;
-  display: block;
-}
-
-.background-image::after {
-  /*content: "";*/
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("@/assets/images/background image.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  z-index: 2;
-} -->
