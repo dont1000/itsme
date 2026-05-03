@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Roboto', sans-serif;
+ 
+}
+
+.primary{
+    color:#0396FF;
+}
+.secondary{
+    color: #151515;
+}
+p{
+    margin-bottom:.975rem;
+}
+
+h1{
+    color: #0396FF;
+    font-family: Roboto;
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2.0rem;
+    margin-bottom: 26px;
+}
