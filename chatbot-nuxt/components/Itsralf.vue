@@ -62,21 +62,14 @@
           <span style="color:#6b7a93">{{ topics.length }} entries</span>
         </div>
         <div :style="mb.topicList">
-          <button
-            v-for="(t, i) in topics"
+          <TopicButton
+            v-for="t in topics"
             :key="t.id"
-            @click="pickMobile(t)"
+            :topic="t"
+            :asked="askedTopics.has(t.id)"
             :disabled="isLoading"
-            :style="{ ...mb.topicRow, opacity: askedTopics.has(t.id) ? 0.55 : 1 }"
-          >
-            <div class="mono" :style="mb.topicIdx">{{ String(i + 1).padStart(2, '0') }}</div>
-            <div :style="{ ...mb.topicIcon, color: t.accent, borderColor: t.accent }">{{ t.icon }}</div>
-            <div :style="mb.topicMain">
-              <div class="mono" :style="mb.topicLabel">{{ t.label }}</div>
-              <div :style="mb.topicQ">"{{ t.q }}"</div>
-            </div>
-            <div class="mono" :style="mb.topicArr">{{ askedTopics.has(t.id) ? '✓' : '›' }}</div>
-          </button>
+            @click="pickMobile(t)"
+          />
         </div>
       </div>
 
@@ -212,27 +205,14 @@
             <span>Themen — eines wählen, oder eigene Frage stellen</span>
           </div>
           <div class="mn-topic-grid">
-            <button
+            <TopicButton
               v-for="t in topics"
               :key="t.id"
-              @mouseenter="hoveredId = t.id"
-              @mouseleave="hoveredId = null"
-              @click="pick(t)"
+              :topic="t"
+              :asked="askedTopics.has(t.id)"
               :disabled="isLoading"
-              :style="{
-                ...mn.topic,
-                background: askedTopics.has(t.id) ? HL : hoveredId === t.id ? '#fafafa' : '#fff',
-                borderColor: askedTopics.has(t.id) ? HL : hoveredId === t.id ? '#111' : '#eaeaea',
-              }"
-            >
-              <span :style="mn.topicNum">{{ t.n }}</span>
-              <span :style="mn.topicName">{{ t.label }}</span>
-              <span :style="{
-                ...mn.topicArrow,
-                transform: hoveredId === t.id || askedTopics.has(t.id) ? 'translateX(0)' : 'translateX(-4px)',
-                opacity: hoveredId === t.id || askedTopics.has(t.id) ? 1 : 0.4,
-              }">↗</span>
-            </button>
+              @click="pick(t)"
+            />
           </div>
         </div>
 
@@ -354,7 +334,6 @@ const messageTimes = ref<Record<number, string>>({});
 const input        = ref('');
 const isLoading    = ref(false);
 const askedTopics  = ref(new Set<string>());
-const hoveredId    = ref<string | null>(null);
 const scrollRef    = ref<HTMLElement | null>(null);
 
 // ── Mobile state ──────────────────────────────────────────────────
