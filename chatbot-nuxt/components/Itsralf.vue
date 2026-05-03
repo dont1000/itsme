@@ -27,7 +27,7 @@
         >
           <div class="content">
             <h1>
-              <div class="secondary">Hallo, ich bin Ralf.
+              <div class="secondary">Hallo, ich bin Ralf from itsme repo.
               <div>Schön, Sie kennenzulernen.</div> 
             </div>
             </h1>
