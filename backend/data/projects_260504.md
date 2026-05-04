@@ -2,7 +2,7 @@
 
 :
 
-## Individual Project **— KI-App „Konsum" (2025–heute)**
+## Individual Project **— KI-App „Konsum" (2026 – heute)**
 
 **Type:** Individual Project 
 
@@ -100,6 +100,14 @@ offener Option zur späteren Erweiterung.
 
 **Outcome:** Deutlich höhere Portal- und Self-Service-Nutzung, spürbare Entlastung des Customer Success Teams, positives Kundenfeedback zum neuen Onboarding.
 
+**Good for:**
+
+- „Gib ein Beispiel, wo Nutzerfeedback eine zentrale Rolle gespielt hat."
+- „Erzähl von einem Projekt, auf das du besonders stolz bist.”
+- „Wie gehst du vor, wenn ein bestehender Prozess nicht funktioniert?"
+- „Erzähl von einer Entscheidung, die du gemeinsam mit Product getroffen hast."
+- „Wie stellst du sicher, dass technische Lösungen wirklich beim Nutzer ankommen?"
+
 ## anybill — CMS für Beleg-Ads (2023)
 
 **Type:** B2B SaaS Feature
@@ -137,7 +145,7 @@ weitere Features ergänzt wurden.
 
 **Problem:** Features wurden ohne klare Qualitätskriterien entwickelt und deployed —
 Acceptance Criteria waren bei Übergabe häufig nicht erfüllt, was zu
-Bugs, Nacharbeit und langsameren Release-Zyklen führte.
+Bugs, Nacharbeit und langsameren Release-Zyklen führte. Dadurch gab es Konflikte zwischen  einzelnen stakeholdern und development.
 
 **What I did:**
 
@@ -153,6 +161,7 @@ weil weniger Nacharbeit nach dem Deployment anfiel.
 **Good for:**
 
 - „Wie hast du die Qualität in deinem Team verbessert?"
+- „wie gehst du mit Konflikten um?"
 - „Gib ein Beispiel, wie du Prozesse optimiert hast."
 - „Wie gehst du mit wiederkehrenden Problemen im Entwicklungsprozess um?"
 
@@ -221,8 +230,6 @@ weil weniger Nacharbeit nach dem Deployment anfiel.
 
 **Good for:**
 
-- „Erzähl von einem Projekt aus deiner Freelancer-Zeit." 
-
-- „Wie gehst du mit nicht-technischen Nutzern um?"
-
- - „Gib ein Beispiel, wo du Konzeption und Umsetzung alleine verantwortet hast."
+- „Erzähl von einem Projekt aus deiner Freelancer-Zeit."
+- „Wie gehst du mit nicht-technischen Nutzern um?"
+- „Gib ein Beispiel, wo du Konzeption und Umsetzung alleine verantwortet hast."
