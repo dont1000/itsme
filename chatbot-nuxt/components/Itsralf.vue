@@ -191,7 +191,6 @@
               <path d="M2 8 Q 120 2, 240 7 T 478 6" :stroke="HL" stroke-width="6" fill="none" stroke-linecap="round" />
             </svg>
           </span><br />
-          <span :style="mn.h1Light">statt zu lesen.</span>
         </h1>
 
         <p :style="mn.lede">
