@@ -1,4 +1,4 @@
-# Projects
+# Projects(projects.md)
 
 :
 
@@ -14,7 +14,7 @@
 
 - Eigenständige Produktentwicklung von der Discovery bis zur Beta —Konzept, Priorisierung und Umsetzung in einer Person
 - LLM-Integration via OpenAI API für intelligente Auswertung von Kaufverhalten
-- Aufbau einer agentenbasierten Feedback-Pipeline zur automatisierten Analyse
+- Aufbau einer agentenbasierten Feedback-Pipeline zur automatisierten Analyse und automatischer Erstellung von Jira Tickets
 - Schnelle Validierung von Use Cases mit Low-Code- und KI-Tools (Cursor, Lovable, n8n)
 
 **Outcome:** Beta-Version im Test. Zeigt in der Praxis, wie moderne KI-Tools den Weg von der Idee zum funktionierenden Produkt erheblich verkürzen können. *
@@ -38,7 +38,7 @@ Bewerbungsprozess.
 
 **What I did:**
 
-- Konzipierte und baute einen RAG-basierten Chatbot mit OpenAI, Python, LangChain und Docker
+- Konzipierte und baute einen RAG-basierten Chatbot mit OpenAI, Python, LangChain und Fast API
 - Befüllte die Wissensbasis mit persönlichen Inhalten: CV, Projektbeschreibungen
 und einer vollständigen Q&A-Sammlung für typische Interviewfragen
 - Entwickelte das Frontend in Vue/Nuxt und deployte die App via Netlify
@@ -221,4 +221,8 @@ weil weniger Nacharbeit nach dem Deployment anfiel.
 
 **Good for:**
 
- - „Erzähl von einem Projekt aus deiner Freelancer-Zeit." - „Wie gehst du mit nicht-technischen Nutzern um?" - „Gib ein Beispiel, wo du Konzeption und Umsetzung alleine verantwortet hast."
+- „Erzähl von einem Projekt aus deiner Freelancer-Zeit." 
+
+- „Wie gehst du mit nicht-technischen Nutzern um?"
+
+ - „Gib ein Beispiel, wo du Konzeption und Umsetzung alleine verantwortet hast."
