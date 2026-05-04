@@ -15,8 +15,9 @@ export default defineNuxtConfig({
     shim: false
   },
   runtimeConfig: {
-    public:{
-    openaiApiKey: process.env.OPENAI_API_KEY,
+    backendUrl: process.env.BACKEND_URL ?? 'http://localhost:8000',
+    public: {
+      openaiApiKey: process.env.OPENAI_API_KEY,
     },
   },
   app: {

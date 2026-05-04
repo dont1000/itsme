@@ -6,7 +6,8 @@ export default defineEventHandler(async (event) => {
     const body: ChatRequest = await readBody(event);
     const { message } = body;
 
-    const response = await fetch("http://localhost:8000/chat", {
+    const { backendUrl } = useRuntimeConfig();
+    const response = await fetch(`${backendUrl}/chat`, {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify({ message, history: [] }),
