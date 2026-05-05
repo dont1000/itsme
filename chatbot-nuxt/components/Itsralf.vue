@@ -107,7 +107,7 @@
       </div>
 
       <template v-for="(m, i) in messages" :key="i">
-        <div v-if="m.role === 'user'" :style="mb.qRow">
+        <div v-if="m.role === 'user'" class="question-msg" :style="mb.qRow">
           <div :style="mb.qBubble">
             <div class="mono" :style="mb.qLabel">you ›</div>
             <div :style="mb.qText">{{ m.text }}</div>
@@ -265,7 +265,7 @@
           </div>
 
           <template v-for="(m, i) in messages" :key="i">
-            <div v-if="m.role === 'user'" :style="mn.qWrap">
+            <div v-if="m.role === 'user'" class="question-msg" :style="mn.qWrap">
               <div :style="mn.qLine"></div>
               <div :style="mn.qBubble">
                 <div :style="mn.qLabel">Sie fragen</div>
@@ -382,6 +382,9 @@ const handleSubmit = () => {
 
 const updateChat = async (message: string) => {
   messages.value.push({ role: 'user', text: message });
+  await nextTick();
+  const questions = scrollRef.value?.querySelectorAll('.question-msg');
+  questions?.[questions.length - 1]?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   const response = await fetchAnswer(message);
   const idx = messages.value.length;
   messageTimes.value[idx] = now();
