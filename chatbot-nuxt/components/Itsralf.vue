@@ -30,11 +30,11 @@
           <span :style="mb.eyeDot"></span> session #2026.05 · live
         </div>
         <h1 class="display" :style="mb.h1">
-          Hi. Ich bin <span :style="{ color: HL }">Ralf</span>.<br/>
-          Eine API für Erfahrung.
+          Hi. Ich bin <span :style="{ color: HL }">Ralfs Bot</span>.<br/>
+          Stelle mir eine Frage
         </h1>
         <p :style="mb.lede">
-          20+ Jahre Web. Dev → Lead → Product Owner.
+          20+ Jahre Web:Vom Entwickler zum Product Builder.
           <strong style="color:#111">Wählen Sie ein Modul</strong> oder tippen Sie eine eigene Frage.
         </p>
         <div :style="mb.metricRow">
@@ -194,8 +194,9 @@
         </h1>
 
         <p :style="mn.lede">
-          20 Jahre Web — vom Entwickler zum Product Owner.
+          20 Jahre Web — vom Entwickler zum Product Builder.
           Ein Chatbot, der für mich antwortet. Klar. Persönlich. Kurz.
+
         </p>
 
         <div :style="mn.topicWrap">
@@ -441,7 +442,7 @@ const mn = {
   statPlus: { fontSize: '16px', color: '#888' },
   statL: { fontSize: '11px', color: '#888', textTransform: 'uppercase' as const, letterSpacing: '0.1em' },
   statSep: { width: '1px', height: '32px', background: '#f0f0f0' },
-  right: { display: 'flex', flexDirection: 'column' as const, minHeight: 0, borderLeft: '1px solid #f0f0f0', background: '#fafafa' },
+  right: { display: 'flex', flexDirection: 'column' as const, minHeight: 0, overflow: 'hidden', borderLeft: '1px solid #f0f0f0', background: '#fafafa' },
   chatHead: { padding: '24px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f0f0f0', background: '#fff', flexShrink: 0 },
   chatHeadLeft: { display: 'flex', alignItems: 'center', gap: '14px' },
   statusOrb: { width: '36px', height: '36px', borderRadius: '99px', display: 'flex', alignItems: 'center', justifyContent: 'center' },
@@ -479,7 +480,7 @@ const mn = {
 
 // ── Mobile styles (same theme as desktop) ─────────────────────────
 const mb = {
-  root: { width: '100%', minHeight: '100dvh', background: '#fff', color: '#111', display: 'flex', flexDirection: 'column' as const, fontFamily: 'Inter, system-ui, sans-serif' },
+  root: { width: '100%', height: '100dvh', background: '#fff', color: '#111', display: 'flex', flexDirection: 'column' as const, fontFamily: 'Inter, system-ui, sans-serif', overflow: 'hidden' },
   header: { padding: '52px 16px 12px', borderBottom: '1px solid #f0f0f0', background: '#fff', flexShrink: 0 },
   brandRow: { display: 'flex', alignItems: 'center', gap: '8px' },
   dot: { width: '8px', height: '8px', borderRadius: '99px', background: HL, animation: 'mn-pulse 2s infinite' },
@@ -510,7 +511,7 @@ const mb = {
   topicArr: { fontSize: '14px', color: '#bbb' },
   contactCard: { background: '#fafafa', border: '1px solid #f0f0f0', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column' as const, gap: '6px' },
   contactLine: { fontSize: '12px', lineHeight: 1.5, fontFamily: "'JetBrains Mono', monospace", color: '#555' },
-  thread: { flex: 1, overflowY: 'auto' as const, padding: '16px 16px', display: 'flex', flexDirection: 'column' as const, gap: '16px' },
+  thread: { flex: 1, overflowY: 'auto' as const, padding: '16px 16px', display: 'flex', flexDirection: 'column' as const, gap: '16px', minHeight: 0 },
   threadHead: { fontSize: '10px', color: '#bbb', letterSpacing: '0.1em', paddingBottom: '4px', fontFamily: "'JetBrains Mono', monospace" },
   empty: { flex: 1, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '40px', color: '#bbb' },
   emptyMark: { width: '56px', height: '56px', borderRadius: '14px', border: '2px dashed #eaeaea', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', color: '#ccc' },
