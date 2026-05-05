@@ -113,7 +113,7 @@
             <div :style="mb.qText">{{ m.text }}</div>
           </div>
         </div>
-        <div v-else :style="mb.aRow">
+        <div v-else class="answer-msg" :style="mb.aRow">
           <div :style="mb.aAvatar">R</div>
           <div :style="mb.aBubble">
             <div class="mono" :style="mb.aMeta">ralf · {{ messageTimes[i] }}</div>
@@ -272,7 +272,7 @@
                 <div :style="mn.qText">{{ m.text }}</div>
               </div>
             </div>
-            <div v-else :style="mn.aWrap">
+            <div v-else class="answer-msg" :style="mn.aWrap">
               <div :style="{ ...mn.aSpine, background: HL }"></div>
               <div :style="mn.aBubble">
                 <div :style="mn.aMeta">
@@ -321,7 +321,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, nextTick, onMounted, onUnmounted } from 'vue';
 import type { Message } from '@/types/chat';
 
 // ── Accent colours (desktop) ──────────────────────────────────────
@@ -386,6 +386,9 @@ const updateChat = async (message: string) => {
   const idx = messages.value.length;
   messageTimes.value[idx] = now();
   messages.value.push({ role: 'assistant', text: response.text });
+  await nextTick();
+  const answers = scrollRef.value?.querySelectorAll('.answer-msg');
+  answers?.[answers.length - 1]?.scrollIntoView({ block: 'start', behavior: 'smooth' });
 };
 
 const fetchAnswer = async (message: string): Promise<{ text: string }> => {
@@ -401,12 +404,6 @@ const fetchAnswer = async (message: string): Promise<{ text: string }> => {
     isLoading.value = false;
   }
 };
-
-watch([messages, isLoading], () => {
-  nextTick(() => {
-    if (scrollRef.value) scrollRef.value.scrollTop = scrollRef.value.scrollHeight;
-  });
-});
 
 // ── Desktop styles ────────────────────────────────────────────────
 const mn = {
