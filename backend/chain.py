@@ -203,11 +203,8 @@ async def stream_response(
         streaming=True,
         temperature=0.3,
         callbacks=[callback],
-       model_kwargs={
-        "reasoning": { "effort": "none" }
-    })
-
-
+        reasoning={"effort": "none"}
+    )
     chain = _build_chain(llm)
     chat_history = _history_to_tuples(history)
 
