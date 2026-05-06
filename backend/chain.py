@@ -163,6 +163,7 @@ def _build_chain(llm: ChatOpenAI) -> ConversationalRetrievalChain:
         model=settings.model_name,
         openai_api_key=settings.openai_api_key,
         temperature=0,
+     
     )
 
     return ConversationalRetrievalChain.from_llm(
@@ -173,7 +174,7 @@ def _build_chain(llm: ChatOpenAI) -> ConversationalRetrievalChain:
         combine_docs_chain_kwargs={"prompt": QA_PROMPT},
         return_source_documents=False,
         verbose=False,
-        reasoning_effort="none",
+      
     )
 
 
@@ -204,7 +205,6 @@ async def stream_response(
         streaming=True,
         temperature=0.3,
         callbacks=[callback],
-        reasoning_effort="none",
     )
     chain = _build_chain(llm)
     chat_history = _history_to_tuples(history)
