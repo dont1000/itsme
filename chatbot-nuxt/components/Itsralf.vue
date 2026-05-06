@@ -165,9 +165,9 @@
         <span :style="mn.brandRole">Personal Bot</span>
       </div>
       <div :style="mn.navRight">
-        <span :style="mn.navLink">About</span>
+        <!-- <span :style="mn.navLink">About</span>
         <span :style="mn.navLink">Work</span>
-        <span :style="mn.navLink">CV</span>
+        <span :style="mn.navLink">CV</span> -->
         <a href="mailto:work@braitling.de" :style="{ ...mn.navCta, background: HL }">
           Kontakt <span style="margin-left:6px">→</span>
         </a>
@@ -234,7 +234,7 @@
           <div :style="mn.statSep"></div>
           <div :style="mn.stat">
             <div :style="{ ...mn.statN, color: HL_DEEP }">●</div>
-            <div :style="mn.statL">Live · Claude</div>
+            <div :style="mn.statL">Live · OpenAi</div>
           </div>
         </div>
       </div>
