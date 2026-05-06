@@ -62,6 +62,7 @@ async def chat(request: ChatRequest):
     The client receives a plain-text stream of tokens separated by no
     delimiter — the frontend should append each chunk to its buffer.
     """
+    print(f"QUESTION: {request.message}", flush=True)
     history_dicts = [m.model_dump() for m in request.history]
 
     async def token_generator():
