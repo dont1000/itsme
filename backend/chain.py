@@ -72,7 +72,7 @@ P02 | KI-Recruiting-Chatbot (2025)            | ki, ai, solo-project, rag, opena
 P03 | anybill – Enterprise Franchise          | b2b, saas, product-ownership, stakeholder, priorisierung, ressourcen, enterprise, skalierung, constraints
 P04 | anybill – Onboarding Flow Redesign      | b2b, saas, ux, onboarding, self-service, teamlead, customer-success, portal
 P05 | anybill – CMS für Beleg-Ads             | b2b, saas, cms, mvp, priorisierung, teamlead, feature-management, kundenwert
-P06 | anybill – Featurequalität               | prozess, qualität, teamlead, definition-of-done, agile, testing, bugs
+P06 | anybill – Featurequalität               | prozess, qualität, konflikte, teamlead, definition-of-done, agile, testing, bugs
 P07 | Cluno – Headless CMS Migration          | migration, cms, headless, hygraph, wordpress, frontend, multi-team, content-modelling, technische-schulden
 P08 | Cluno – User Account & Booking Flow     | frontend, vue, aws-cognito, auth, onboarding, booking, architektur, nuxt
 P09 | Barmer – Online Magazin                 | freelance, wordpress, php, cms, redaktion, non-technical-users, langzeitprojekt
