@@ -66,12 +66,15 @@ async def chat(request: ChatRequest):
     history_dicts = [m.model_dump() for m in request.history]
 
     async def token_generator():
+        answer_parts = []
         try:
             async for token in stream_response(request.message, history_dicts):
+                answer_parts.append(token)
                 yield token
         except Exception as exc:
-            # Surface errors as a final stream chunk so the client sees them
             yield f"\n\n[Error: {exc}]"
+        finally:
+            print(f"ANSWER: {''.join(answer_parts)}", flush=True)
 
     return StreamingResponse(
         token_generator(),
